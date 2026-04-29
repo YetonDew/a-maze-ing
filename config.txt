@@ -9,10 +9,8 @@ EXIT=29,19
 # Output
 OUTPUT_FILE=my_maze.txt
 
-# Perfect or imperfect
-PERFECT=False
+# Perfect maze setting
+PERFECT=True
 
-# Optional settings
+# Optional seed for reproducibility
 SEED=42
-DISPLAY=ascii
-COLOR=blue
