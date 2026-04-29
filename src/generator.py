@@ -3,7 +3,7 @@
 import random
 
 from src.maze import DIRECTIONS, Maze, Cell
-from src.pattern import place_42_pattern
+from src.pattern import PatternPlacementError, place_42_pattern
 from src.validator import has_forbidden_open_area, is_connected, is_perfect
 
 
@@ -44,7 +44,10 @@ class MazeGenerator:
                 self.random = random.Random(self.seed + attempt)
             maze = Maze(self.width, self.height, self.entry, self.exit)
 
-            placed = place_42_pattern(maze)
+            try:
+                placed = place_42_pattern(maze)
+            except PatternPlacementError as exc:
+                raise MazeGenerationError(str(exc)) from exc
             if not placed:
                 print(
                     "Warning: maze too small or invalid position for "
