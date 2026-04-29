@@ -148,7 +148,7 @@ pyproject.toml         package build metadata
 
 ## Team and project management
 
-Suggested split for two people:
+splited roles:
 
 - ajeffers: parser, maze model, generator, seed support.
 - msakalin: validator, solver, exporter, renderer, README and packaging.
