@@ -6,6 +6,7 @@ from src.maze import Maze
 class PatternPlacementError(Exception):
     """Raised when the 42 pattern cannot be placed because it overlaps."""
 
+
 # 5 rows high, 7 columns wide. Cells marked with X stay fully closed.
 PATTERN_42 = (
     "X   XXX",
@@ -46,11 +47,13 @@ def place_42_pattern(maze: Maze) -> bool:
                 coord = (start_x + dx, start_y + dy)
                 if coord == maze.entry:
                     raise PatternPlacementError(
-                        "Entry point is inside the 42 pattern; cannot create the maze"
+                        "Entry point is inside the 42 pattern; cannot "
+                        "create the maze"
                     )
                 if coord == maze.exit:
                     raise PatternPlacementError(
-                        "Exit point is inside the 42 pattern; cannot create the maze"
+                        "Exit point is inside the 42 pattern; cannot "
+                        "create the maze"
                     )
                 pattern_cells.add(coord)
 
