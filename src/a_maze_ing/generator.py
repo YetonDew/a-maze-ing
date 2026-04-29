@@ -1,4 +1,4 @@
-"""Reusable maze generation module for A-Maze-ing."""
+"""Generator module moved into package layout."""
 
 from __future__ import annotations
 
@@ -52,8 +52,6 @@ class MazeGenerationError(Exception):
 
 @dataclass(slots=True)
 class MazeData:
-    """Generated maze data and rendering helpers."""
-
     width: int
     height: int
     entry: Coordinate
@@ -64,13 +62,9 @@ class MazeData:
     pattern_warning: str | None = None
 
     def wall_digit(self, x: int, y: int) -> str:
-        """Return the hexadecimal wall encoding for one cell."""
-
         return format(self.walls[y][x], "X")
 
     def solution_directions(self) -> list[str]:
-        """Return the shortest path as cardinal directions."""
-
         directions: list[str] = []
         for current, nxt in zip(self.solution, self.solution[1:]):
             current_x, current_y = current
@@ -83,8 +77,6 @@ class MazeData:
         return directions
 
     def to_output_text(self) -> str:
-        """Render the maze using the mandated file format."""
-
         rows = [
             "".join(self.wall_digit(x, y) for x in range(self.width))
             for y in range(self.height)
@@ -104,8 +96,6 @@ class MazeData:
         )
 
     def render_ascii(self, show_path: bool = True) -> str:
-        """Render the maze as terminal-friendly ASCII art."""
-
         canvas_height = self.height * 2 + 1
         canvas_width = self.width * 2 + 1
         canvas = [["#" for _ in range(canvas_width)] for _ in range(canvas_height)]
@@ -142,8 +132,6 @@ class MazeData:
 
 
 class MazeGenerator:
-    """Generate maze structures that can be reused in later projects."""
-
     pattern_width = len(PATTERN_BITMAP[0])
     pattern_height = len(PATTERN_BITMAP)
 
@@ -165,8 +153,6 @@ class MazeGenerator:
         self.random = Random(seed)
 
     def generate(self) -> MazeData:
-        """Build a maze and return all data needed by the CLI."""
-
         self._validate_geometry()
         pattern_cells, pattern_warning = self._build_pattern_cells()
 
@@ -260,9 +246,7 @@ class MazeGenerator:
         return unique_positions
 
     def _carve_depth_first(
-        self,
-        walls: list[list[int]],
-        accessible: set[Coordinate],
+        self, walls: list[list[int]], accessible: set[Coordinate]
     ) -> None:
         stack: list[Coordinate] = [self.entry]
         visited = {self.entry}
@@ -293,9 +277,7 @@ class MazeGenerator:
             )
 
     def _solve(
-        self,
-        walls: list[list[int]],
-        pattern_cells: set[Coordinate],
+        self, walls: list[list[int]], pattern_cells: set[Coordinate]
     ) -> list[Coordinate]:
         queue: deque[Coordinate] = deque([self.entry])
         parents: dict[Coordinate, Coordinate | None] = {self.entry: None}
@@ -306,10 +288,7 @@ class MazeGenerator:
                 break
 
             for next_x, next_y in self._reachable_neighbors(
-                walls,
-                current_x,
-                current_y,
-                pattern_cells,
+                walls, current_x, current_y, pattern_cells
             ):
                 next_cell = (next_x, next_y)
                 if next_cell in parents:
@@ -330,11 +309,7 @@ class MazeGenerator:
         return path
 
     def _reachable_neighbors(
-        self,
-        walls: list[list[int]],
-        x: int,
-        y: int,
-        pattern_cells: set[Coordinate],
+        self, walls: list[list[int]], x: int, y: int, pattern_cells: set[Coordinate]
     ) -> list[Coordinate]:
         neighbors: list[Coordinate] = []
         for direction, (offset_x, offset_y) in OFFSETS.items():
@@ -351,10 +326,7 @@ class MazeGenerator:
         return neighbors
 
     def _accessible_neighbors(
-        self,
-        x: int,
-        y: int,
-        accessible: set[Coordinate],
+        self, x: int, y: int, accessible: set[Coordinate]
     ) -> list[tuple[int, int, Direction]]:
         neighbors: list[tuple[int, int, Direction]] = []
         for direction, (offset_x, offset_y) in OFFSETS.items():
