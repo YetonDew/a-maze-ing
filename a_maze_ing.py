@@ -27,6 +27,8 @@ def build_generator(
 
 def generate_export_and_display(
     config: dict[str, Any],
+    show_path: bool = False,
+    wall_color: str = "default",
 ) -> tuple[MazeGenerator, str]:
     """Generate, validate, export, and display one maze."""
     generator = build_generator(config)
@@ -35,7 +37,7 @@ def generate_export_and_display(
     solution = shortest_path(maze)
     export_maze(maze, config["OUTPUT_FILE"], solution)
     print(f"Maze exported to {config['OUTPUT_FILE']}")
-    print_maze(maze, solution, show_path=False)
+    print_maze(maze, solution, show_path=show_path, wall_color=wall_color)
     return generator, solution
 
 
@@ -70,8 +72,9 @@ def interactive_loop(
                 config["SEED"] = int(seed) + 1
             current_generator, current_solution = generate_export_and_display(
                 config,
+                show_path=show_path,
+                wall_color=wall_color,
             )
-            show_path = False
         elif choice == "c":
             names = ", ".join(COLORS.keys())
             wall_color = input(f"Color ({names}): ").strip().lower()
