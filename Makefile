@@ -1,29 +1,33 @@
-PYTHON := .venv/bin/python
-PIP := .venv/bin/pip
-FLAKE8 := .venv/bin/flake8
-MYPY := .venv/bin/mypy
-
-.PHONY: install run debug clean lint lint-strict
+PYTHON = python3
+CONFIG = config.txt
 
 install:
-	python3 -m venv .venv
-	$(PIP) install --upgrade pip
-	$(PIP) install flake8 mypy
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -e . flake8 mypy build
 
 run:
-	$(PYTHON) a_maze_ing.py config.txt
+	$(PYTHON) a_maze_ing.py $(CONFIG)
 
 debug:
-	$(PYTHON) -m pdb a_maze_ing.py config.txt
+	$(PYTHON) -m pdb a_maze_ing.py $(CONFIG)
 
 clean:
-	rm -rf __pycache__ .mypy_cache .pytest_cache .ruff_cache build dist
-	find . -name '*.pyc' -delete
+	find . -type d -name __pycache__ -prune -exec rm -rf {} +
+	rm -rf .mypy_cache .pytest_cache build dist *.egg-info
+	rm -f maze.txt
 
 lint:
-	$(FLAKE8) .
-	$(MYPY) . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
+	flake8 . --exclude=.venv
+	mypy . --exclude '.venv' \
+		--warn-return-any \
+		--warn-unused-ignores \
+		--ignore-missing-imports \
+		--disallow-untyped-defs \
+		--check-untyped-defs
 
 lint-strict:
-	$(FLAKE8) .
-	$(MYPY) . --strict
+	flake8 .
+	mypy . --strict
+
+build:
+	$(PYTHON) -m build

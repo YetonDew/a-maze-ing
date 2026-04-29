@@ -1,16 +1,10 @@
-# Maze size
-WIDTH=39
-HEIGHT=20
-
-# Entry and exit
+# Default A-Maze-ing configuration
+WIDTH=10
+HEIGHT=10
 ENTRY=0,0
-EXIT=29,19
-
-# Output
-OUTPUT_FILE=my_maze.txt
-
-# Perfect maze setting
+EXIT=5,9
+OUTPUT_FILE=maze.txt
 PERFECT=True
-
-# Optional seed for reproducibility
 SEED=42
+ALGORITHM=dfs
+DISPLAY=ascii

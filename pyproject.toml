@@ -3,14 +3,17 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "a-maze-ing"
-version = "0.1.0"
-description = "Maze generator for the 42 A-Maze-ing project"
-requires-python = ">=3.11"
+name = "mazegen-amazeing"
+version = "1.0.0"
+description = "Reusable maze generator for the 42 A-Maze-ing project"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "42 Students"}]
 
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
+[tool.setuptools]
+packages = ["src"]
+py-modules = ["mazegen_amazeing"]
 
-[tool.black]
-line-length = 88
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203"]
